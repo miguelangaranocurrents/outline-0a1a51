@@ -185,13 +185,9 @@ function History() {
     ? revisions.get(latestRevisionEvent.id)
     : undefined;
 
-  const [dbgFetch, setDbgFetch] = React.useState("none");
   React.useEffect(() => {
     if (latestRevision && !latestRevision.data) {
-      revisions.fetch(latestRevision.id).then(
-        (m) => setDbgFetch(`ok data=${String(!!m.data)}`),
-        (e) => setDbgFetch(`err ${String(e)}`)
-      );
+      void revisions.fetch(latestRevision.id);
     }
   }, [revisions, latestRevision]);
 
@@ -260,7 +256,6 @@ function History() {
 
   return (
     <Sidebar title={t("History")} onClose={onCloseHistory} scrollable={false}>
-      <div>{`DBG rev=${String(!!latestRevision)} data=${String(!!latestRevision?.data)} upd=${String(isDocUpdated)} rt=${String(latestRevision?.title)} dt=${String(document?.title)} fetch=${dbgFetch}`}</div>
       <HighlightChangesControl
         showChanges={showChanges}
         onShowChangesToggle={handleShowChangesToggle}
